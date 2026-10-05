@@ -1,0 +1,192 @@
+{
+  "project_title": "SomnaScan AI - Clinical Sleep Disorder Diagnostic Dashboard",
+  "app_type": "dashboard",
+  "context": "Clinical Medical AI Diagnostic Tool for Sleep Disorder Screening",
+  "theme": {
+    "mode": "light",
+    "background": "bg-slate-50",
+    "surface": "bg-white",
+    "surface_subtle": "bg-slate-100/80",
+    "text_primary": "text-slate-900",
+    "text_secondary": "text-slate-600",
+    "text_muted": "text-slate-500",
+    "border_color": "border-slate-200",
+    "border_subtle": "border-slate-100",
+    "primary": {
+      "main": "#0284C7",
+      "hover": "#0369A1",
+      "bg_light": "bg-sky-50",
+      "text": "text-sky-700",
+      "border": "border-sky-200"
+    },
+    "status": {
+      "none": {
+        "label": "None (Normal)",
+        "banner_bg": "bg-emerald-500",
+        "card_bg": "bg-emerald-50",
+        "border": "border-emerald-300",
+        "text": "text-emerald-950",
+        "accent": "#10B981"
+      },
+      "insomnia": {
+        "label": "Insomnia Detected",
+        "banner_bg": "bg-amber-500",
+        "card_bg": "bg-amber-50",
+        "border": "border-amber-300",
+        "text": "text-amber-950",
+        "accent": "#F59E0B"
+      },
+      "sleep_apnea": {
+        "label": "Sleep Apnea Detected",
+        "banner_bg": "bg-rose-600",
+        "card_bg": "bg-rose-50",
+        "border": "border-rose-300",
+        "text": "text-rose-950",
+        "accent": "#E11D48"
+      }
+    }
+  },
+  "typography": {
+    "heading_font": "Work Sans, Plus Jakarta Sans, sans-serif",
+    "body_font": "IBM Plex Sans, Source Sans 3, sans-serif",
+    "mono_font": "JetBrains Mono, monospace",
+    "hierarchy": {
+      "h1": "text-3xl sm:text-4xl font-bold tracking-tight text-slate-900",
+      "h2": "text-xl sm:text-2xl font-semibold tracking-tight text-slate-800",
+      "h3": "text-lg font-semibold text-slate-800",
+      "label": "text-xs font-medium uppercase tracking-wider text-slate-500",
+      "body": "text-sm text-slate-700 leading-relaxed",
+      "body_muted": "text-xs text-slate-500"
+    }
+  },
+  "layout_and_grid": {
+    "container": "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6",
+    "grid_structure": "grid grid-cols-1 lg:grid-cols-12 gap-6 items-start",
+    "input_section_span": "lg:col-span-5 space-y-6",
+    "results_section_span": "lg:col-span-7 space-y-6",
+    "card_style": "bg-white rounded-xl border border-slate-200/80 shadow-sm p-5 space-y-4"
+  },
+  "key_components": [
+    {
+      "name": "Header & Quick Controls",
+      "description": "Sticky top bar with clinical branding, active model version indicator, 'Load Demo Profiles' dropdown menu, and 'Reset Inputs' action.",
+      "features": ["Preset profiles: Healthy Adult, High-Stress Worker (Insomnia), Apnea Risk Senior", "Clinical timestamp and patient ID simulator"]
+    },
+    {
+      "name": "Patient Input Panel",
+      "description": "Comprehensive diagnostic form organized into categorized tabs/sections: Demographics, Sleep Metrics, Vitals & Activity.",
+      "inputs": {
+        "numerical_sliders": [
+          {"id": "age", "label": "Age", "min": 18, "max": 80, "step": 1, "unit": "years", "default": 38},
+          {"id": "sleep_duration", "label": "Sleep Duration", "min": 4.0, "max": 10.0, "step": 0.1, "unit": "hours/day", "default": 7.2},
+          {"id": "quality_of_sleep", "label": "Quality of Sleep", "min": 1, "max": 10, "step": 1, "unit": "/10 scale", "default": 7},
+          {"id": "physical_activity_level", "label": "Physical Activity Level", "min": 0, "max": 120, "step": 5, "unit": "mins/day", "default": 60},
+          {"id": "stress_level", "label": "Stress Level", "min": 1, "max": 10, "step": 1, "unit": "/10 scale", "default": 4},
+          {"id": "heart_rate", "label": "Heart Rate", "min": 50, "max": 110, "step": 1, "unit": "bpm", "default": 70},
+          {"id": "daily_steps", "label": "Daily Steps", "min": 1000, "max": 15000, "step": 250, "unit": "steps", "default": 7000},
+          {"id": "systolic_blood_pressure", "label": "Systolic Blood Pressure", "min": 90, "max": 180, "step": 1, "unit": "mmHg", "default": 122},
+          {"id": "diastolic_blood_pressure", "label": "Diastolic Blood Pressure", "min": 60, "max": 120, "step": 1, "unit": "mmHg", "default": 80}
+        ],
+        "categorical_dropdowns": [
+          {"id": "gender", "label": "Gender", "options": [{"label": "Male", "value": 0}, {"label": "Female", "value": 1}]},
+          {"id": "occupation", "label": "Occupation Category", "options": [{"label": "Software Engineer / Office", "value": 1}, {"label": "Doctor / Healthcare", "value": 2}, {"label": "Teacher / Educator", "value": 3}, {"label": "Nurse / Shift Worker", "value": 4}, {"label": "Sales / Executive", "value": 5}, {"label": "Lawyer / Financial", "value": 6}, {"label": "Accountant / Admin", "value": 7}, {"label": "Scientist / Researcher", "value": 8}, {"label": "Other Professional", "value": 9}]},
+          {"id": "bmi_category", "label": "BMI Category", "options": [{"label": "Normal Weight", "value": 0}, {"label": "Overweight", "value": 1}, {"label": "Obese", "value": 2}]}
+        ]
+      }
+    },
+    {
+      "name": "Prominent Primary Diagnosis Banner",
+      "description": "High-visibility clinical banner updating instantly upon input changes.",
+      "states": {
+        "None": "Green banner (bg-emerald-500 text-white) with checkmark icon and 'No Disorder Detected' text",
+        "Insomnia": "Yellow/Amber banner (bg-amber-500 text-slate-900) with alert icon and 'Insomnia Detected' text",
+        "Sleep Apnea": "Red banner (bg-rose-600 text-white) with urgent icon and 'Sleep Apnea Risk Detected' text"
+      }
+    },
+    {
+      "name": "Confidence Breakdown & Decision Tree Tally",
+      "description": "Visual percentage breakdown calculated by parsing all 10 decision trees from model_logic.json and computing class proportions.",
+      "visuals": "Animated progress bars with exact tree vote counts (e.g., '7 / 10 Decision Trees -> 70% Confidence')"
+    },
+    {
+      "name": "Patient vs Baseline Comparison Cards",
+      "description": "Interactive visual cards highlighting key deviations from population baseline averages.",
+      "metrics_compared": [
+        {"metric": "Sleep Duration", "patient_val": "Patient Value", "baseline": "7.2 hrs/day", "indicator": "Variance badge"},
+        {"metric": "Blood Pressure", "patient_val": "Systolic/Diastolic", "baseline": "120/80 mmHg", "indicator": "Hypertension risk scale"},
+        {"metric": "Stress vs Activity", "patient_val": "Ratio", "baseline": "Balanced", "indicator": "Health index bar"}
+      ]
+    },
+    {
+      "name": "Model & Project Details Card",
+      "description": "Card displaying strict specs required by prompt: 'Model: Random Forest, Split: 80% Train / 20% Test, Accuracy: 88.00%' along with tree evaluation metadata.",
+      "specs": {
+        "model": "Random Forest",
+        "split": "80% Train / 20% Test",
+        "accuracy": "88.00%",
+        "trees_count": 10,
+        "feature_count": 12
+      }
+    },
+    {
+      "name": "Medical Liability Disclaimer Footer",
+      "description": "Standard clinical disclaimer required at the bottom with clear warning styling.",
+      "text": "DISCLAIMER: This software tool is an exploratory machine learning screening demonstrator and is NOT intended for primary clinical diagnosis or medical treatment decisions. Consult a qualified sleep specialist or healthcare professional for formal diagnosis."
+    }
+  ],
+  "model_execution_rules": {
+    "file_source": "model_logic.json",
+    "feature_index_map": {
+      "gender": 0,
+      "age": 1,
+      "occupation": 2,
+      "sleep_duration": 3,
+      "quality_of_sleep": 4,
+      "physical_activity_level": 5,
+      "stress_level": 6,
+      "bmi_category": 7,
+      "heart_rate": 8,
+      "daily_steps": 9,
+      "systolic_blood_pressure": 10,
+      "diastolic_blood_pressure": 11
+    },
+    "evaluation_method": "Traverse each tree object recursively. Evaluate condition: if patient_input[node.feature] <= node.threshold, go to left child, else right child. When node has 'diagnosis', record leaf class. Tally votes across all trees to calculate percentage confidence."
+  },
+  "image_urls": {
+    "laboratory_bg": "https://images.unsplash.com/photo-1576669801838-1b1c52121e6a?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzV8MHwxfHNlYXJjaHwyfHxtZWRpY2FsJTIwZG9jdG9yJTIwY2xpbmljYWwlMjBsYWJvcmF0b3J5fGVufDB8fHx8MTc5MTIzMDU5MXww&ixlib=rb-4.1.0&q=85",
+    "clinical_avatar": "https://images.unsplash.com/photo-1618053448492-2b629c2c912c?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzV8MHwxfHNlYXJjaHxfHxtZWRpY2FsJTIwZG9jdG9yJTIwY2xpbmljYWwlMjBsYWJvcmF0b3J5fGVufDB8fHx8MTc5MTIzMDU5MXww&ixlib=rb-4.1.0&q=85"
+  },
+  "testing_attributes": {
+    "rule": "All interactive elements, inputs, selects, buttons, and summary cards must contain kebab-case data-testid attributes.",
+    "key_test_ids": [
+      "patient-input-age-slider",
+      "patient-input-gender-select",
+      "patient-input-occupation-select",
+      "patient-input-sleep-duration-slider",
+      "patient-input-quality-sleep-slider",
+      "patient-input-activity-slider",
+      "patient-input-stress-slider",
+      "patient-input-bmi-select",
+      "patient-input-heart-rate-slider",
+      "patient-input-steps-slider",
+      "patient-input-systolic-slider",
+      "patient-input-diastolic-slider",
+      "primary-diagnosis-banner",
+      "confidence-percentage-none",
+      "confidence-percentage-insomnia",
+      "confidence-percentage-sleep-apnea",
+      "load-example-patient-button",
+      "comparison-cards-container",
+      "project-details-card",
+      "medical-disclaimer-footer"
+    ]
+  },
+  "instructions_to_main_agent": [
+    "Write all React code in Javascript (.js / .jsx) as instructed.",
+    "Parse model_logic.json tree structures directly in memory to run the Random Forest model on patient input state changes.",
+    "Do NOT use teal green (#1B93A4) or Space Grotesk font as prohibited by design guidelines.",
+    "Ensure high contrast in light mode: deep slate text over crisp white cards with soft slate borders.",
+    "Include toast notifications using Sonner when an example patient profile is loaded.",
+    "Strictly include all data-testid attributes listed in testing_attributes."
+  ]
+}
