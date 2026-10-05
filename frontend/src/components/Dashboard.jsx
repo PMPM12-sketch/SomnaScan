@@ -15,6 +15,7 @@ import { DiagnosisBanner } from "@/components/DiagnosisBanner";
 import { ConfidenceBreakdown } from "@/components/ConfidenceBreakdown";
 import { ComparisonCards } from "@/components/ComparisonCards";
 import { ProjectDetails } from "@/components/ProjectDetails";
+import { AboutAI } from "@/components/AboutAI";
 import { runModel, DEFAULT_PATIENT, DEMO_PATIENTS } from "@/lib/model";
 import { generateReport } from "@/lib/pdfReport";
 
@@ -59,7 +60,7 @@ export default function Dashboard() {
             </div>
             <div>
               <h1 className="font-heading text-lg sm:text-xl font-bold tracking-tight leading-none">
-                SomnaScan <span className="text-sky-600">AI</span>
+                Slacking<span className="text-sky-600">AI</span>
               </h1>
               <p className="text-[11px] text-slate-500 mt-0.5">Sleep Disorder Screening Dashboard</p>
             </div>
@@ -132,6 +133,7 @@ export default function Dashboard() {
               primary={result.primary}
             />
             <ComparisonCards patient={patient} />
+            <AboutAI />
           </div>
         </div>
 

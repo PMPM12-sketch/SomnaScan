@@ -55,8 +55,22 @@ export const CATEGORICAL_FIELDS = [
   },
 ];
 
-export const DEFAULT_PATIENT = {
-  gender: 0,
+export const MODEL_NAME = "SlackingAI";
+
+export const AI_DESCRIPTION =
+  "SlackingAI is the sleep-disorder screening model powering this dashboard. It is a Random Forest classifier defined in model_logic.json. Each patient profile is passed through every decision tree; each tree casts a vote for a class, and the proportion of votes determines the confidence shown. The model was trained on sleep health and lifestyle data.";
+
+export const AI_FACTS = [
+  { label: "Model Name", value: MODEL_NAME },
+  { label: "Algorithm", value: "Random Forest (ensemble of decision trees)" },
+  { label: "Estimators", value: `${TREE_COUNT} decision trees` },
+  { label: "Input Features", value: `${FEATURE_ORDER.length}` },
+  { label: "Output Classes", value: CLASSES.join(", ") },
+  { label: "Train / Test Split", value: "80% Train / 20% Test" },
+  { label: "Reported Accuracy", value: "88.00%" },
+];
+
+export const DEFAULT_PATIENT = {  gender: 0,
   age: 38,
   occupation: 1,
   sleep_duration: 7.2,

@@ -76,7 +76,7 @@ export function generateReport(patient, result) {
   doc.setTextColor(...COLORS.white);
   doc.setFont("helvetica", "bold");
   doc.setFontSize(18);
-  doc.text("SomnaScan AI", margin, 32);
+  doc.text("SlackingAI", margin, 32);
   doc.setFont("helvetica", "normal");
   doc.setFontSize(10);
   doc.setTextColor(203, 213, 225);
@@ -192,6 +192,7 @@ export function generateReport(patient, result) {
   // ---------- About the AI ----------
   sectionHeading("About the AI Model");
   const aiFacts = [
+    ["Model Name", "SlackingAI"],
     ["Algorithm", "Random Forest classifier (ensemble of decision trees)"],
     ["Estimators", `${TREE_COUNT} decision trees`],
     ["Input Features", `${FEATURE_ORDER.length} (${FEATURE_ORDER.join(", ")})`],
@@ -200,7 +201,7 @@ export function generateReport(patient, result) {
     ["Reported Accuracy", "88.00%"],
   ];
   const aiIntro = doc.splitTextToSize(
-    "This screening result is produced by a Random Forest model defined in model_logic.json. Each patient profile is passed through every decision tree; each tree casts a vote for a class, and the proportion of votes determines the confidence shown above. The model was trained on sleep health and lifestyle data.",
+    "This screening result is produced by SlackingAI, a Random Forest model defined in model_logic.json. Each patient profile is passed through every decision tree; each tree casts a vote for a class, and the proportion of votes determines the confidence shown above. The model was trained on sleep health and lifestyle data.",
     contentW
   );
   ensureSpace(aiIntro.length * 12 + 10);
@@ -245,10 +246,10 @@ export function generateReport(patient, result) {
     doc.setFont("helvetica", "normal");
     doc.setFontSize(7);
     doc.setTextColor(...COLORS.slate500);
-    doc.text("SomnaScan AI - Confidential Screening Report", margin, pageH - 20);
+    doc.text("SlackingAI - Confidential Screening Report", margin, pageH - 20);
     doc.text(`Page ${p} of ${total}`, pageW - margin, pageH - 20, { align: "right" });
   }
 
   const stamp = now.toISOString().slice(0, 19).replace(/[:T]/g, "-");
-  doc.save(`SomnaScan-Report-${stamp}.pdf`);
+  doc.save(`SlackingAI-Report-${stamp}.pdf`);
 }
