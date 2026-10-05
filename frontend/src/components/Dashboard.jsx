@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
-import { Moon, RotateCcw, Users, ShieldAlert, Activity } from "lucide-react";
+import { Moon, RotateCcw, Users, ShieldAlert, Activity, FileDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -16,6 +16,7 @@ import { ConfidenceBreakdown } from "@/components/ConfidenceBreakdown";
 import { ComparisonCards } from "@/components/ComparisonCards";
 import { ProjectDetails } from "@/components/ProjectDetails";
 import { runModel, DEFAULT_PATIENT, DEMO_PATIENTS } from "@/lib/model";
+import { generateReport } from "@/lib/pdfReport";
 
 const PATIENT_ID = "PT-" + Math.floor(1000 + Math.random() * 9000);
 
@@ -36,6 +37,15 @@ export default function Dashboard() {
   const reset = () => {
     setPatient(DEFAULT_PATIENT);
     toast.info("Inputs reset to default values");
+  };
+
+  const exportPdf = () => {
+    try {
+      generateReport(patient, result);
+      toast.success("PDF report generated", { description: "Check your downloads folder" });
+    } catch (e) {
+      toast.error("Could not generate PDF", { description: String(e?.message || e) });
+    }
   };
 
   return (
@@ -82,6 +92,15 @@ export default function Dashboard() {
                 ))}
               </DropdownMenuContent>
             </DropdownMenu>
+            <Button
+              data-testid="export-pdf-button"
+              variant="outline"
+              onClick={exportPdf}
+              className="gap-2 border-sky-300 text-sky-700 hover:bg-sky-50 hover:text-sky-800"
+            >
+              <FileDown className="h-4 w-4" />
+              <span className="hidden sm:inline">Export PDF</span>
+            </Button>
             <Button
               data-testid="reset-inputs-button"
               variant="outline"
