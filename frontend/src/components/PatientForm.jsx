@@ -20,7 +20,8 @@ const SELECT_TESTIDS = {
   bmi_category: "patient-input-bmi-select",
 };
 
-const fmt = (v) => (Number.isInteger(v) ? v : Number(v).toFixed(1));
+const fmt = (v) =>
+  !Number.isFinite(Number(v)) ? "\u2014" : Number.isInteger(v) ? v : Number(v).toFixed(1);
 
 export const PatientForm = ({ patient, onChange }) => {
   return (
@@ -39,7 +40,10 @@ export const PatientForm = ({ patient, onChange }) => {
             </label>
             <Select
               value={String(patient[field.id])}
-              onValueChange={(val) => onChange(field.id, Number(val))}
+              onValueChange={(val) => {
+                const n = Number(val);
+                if (field.options.some((o) => o.value === n)) onChange(field.id, n);
+              }}
             >
               <SelectTrigger data-testid={SELECT_TESTIDS[field.id]} className="h-10 bg-slate-50 border-slate-200">
                 <SelectValue />

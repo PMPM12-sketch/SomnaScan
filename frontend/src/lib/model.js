@@ -126,9 +126,33 @@ function evaluateTree(node, inputVector) {
   return current ? current.diagnosis : null;
 }
 
-// Run the Random Forest over patient input: returns votes + confidence percentages
+// Check one field against its slider range / dropdown options. Returns a clean number.
+function cleanValue(field, raw) {
+  if (raw === "" || raw === null || raw === undefined) {
+    throw new Error(`Missing value for ${field}`);
+  }
+  const v = Number(raw);
+  if (!Number.isFinite(v)) {
+    throw new Error(`Invalid value for ${field}`);
+  }
+  const numeric = NUMERIC_FIELDS.find((f) => f.id === field);
+  if (numeric && (v < numeric.min || v > numeric.max)) {
+    throw new Error(`${numeric.label} must be between ${numeric.min} and ${numeric.max}`);
+  }
+  const categorical = CATEGORICAL_FIELDS.find((f) => f.id === field);
+  if (categorical && !categorical.options.some((o) => o.value === v)) {
+    throw new Error(`Unknown option for ${categorical.label}`);
+  }
+  return v;
+}
+
+// Run the Random Forest over patient input: returns votes + confidence percentages.
+// Throws an Error with a readable message if any input is missing or out of range.
 export function runModel(patient) {
-  const inputVector = FEATURE_ORDER.map((f) => Number(patient[f]));
+  if (!patient || typeof patient !== "object") {
+    throw new Error("No patient data provided");
+  }
+  const inputVector = FEATURE_ORDER.map((f) => cleanValue(f, patient[f]));
 
   const votes = {};
   CLASSES.forEach((c) => (votes[c] = 0));
