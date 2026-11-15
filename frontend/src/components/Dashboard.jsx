@@ -24,7 +24,13 @@ const PATIENT_ID = "PT-" + Math.floor(1000 + Math.random() * 9000);
 export default function Dashboard() {
   const [patient, setPatient] = useState(DEFAULT_PATIENT);
 
-  const result = useMemo(() => runModel(patient), [patient]);
+  const { result, error } = useMemo(() => {
+    try {
+      return { result: runModel(patient), error: null };
+    } catch (e) {
+      return { result: null, error: e instanceof Error ? e.message : "Invalid input" };
+    }
+  }, [patient]);
 
   const handleChange = (field, value) => {
     setPatient((prev) => ({ ...prev, [field]: value }));
@@ -41,11 +47,15 @@ export default function Dashboard() {
   };
 
   const exportPdf = () => {
+    if (!result) {
+      toast.error("Fix the input problem before exporting");
+      return;
+    }
     try {
       generateReport(patient, result);
       toast.success("PDF report generated", { description: "Check your downloads folder" });
     } catch (e) {
-      toast.error("Could not generate PDF", { description: String(e?.message || e) });
+      toast.error("Could not generate PDF", { description: "Something went wrong. Please try again." });
     }
   };
 
@@ -126,12 +136,24 @@ export default function Dashboard() {
 
           {/* Results column */}
           <div className="lg:col-span-7 space-y-6">
-            <DiagnosisBanner primary={result.primary} confidence={result.confidence} />
-            <ConfidenceBreakdown
-              confidence={result.confidence}
-              votes={result.votes}
-              primary={result.primary}
-            />
+            {result ? (
+              <>
+                <DiagnosisBanner primary={result.primary} confidence={result.confidence} />
+                <ConfidenceBreakdown
+                  confidence={result.confidence}
+                  votes={result.votes}
+                  primary={result.primary}
+                />
+              </>
+            ) : (
+              <div
+                role="alert"
+                data-testid="input-error-alert"
+                className="rounded-xl border border-red-200 bg-red-50 p-5 text-sm text-red-800"
+              >
+                Cannot run the screening: {error}. Press Reset to restore default values.
+              </div>
+            )}
             <ComparisonCards patient={patient} />
             <AboutAI />
           </div>

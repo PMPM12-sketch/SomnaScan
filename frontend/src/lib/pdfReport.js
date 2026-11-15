@@ -36,7 +36,7 @@ const STATUS_LABEL = {
 function catLabel(fieldId, value) {
   const field = CATEGORICAL_FIELDS.find((f) => f.id === fieldId);
   const opt = field?.options.find((o) => o.value === Number(value));
-  return opt ? opt.label : String(value);
+  return opt ? opt.label : "\u2014";
 }
 
 export function generateReport(patient, result) {
@@ -97,7 +97,7 @@ export function generateReport(patient, result) {
   doc.setFontSize(18);
   doc.text(STATUS_LABEL[result.primary] || result.primary, margin + 16, y + 42);
   doc.setFontSize(22);
-  const conf = `${result.confidence[result.primary].toFixed(0)}%`;
+  const conf = `${Number(result.confidence?.[result.primary] ?? 0).toFixed(0)}%`;
   doc.text(conf, pageW - margin - 16, y + 34, { align: "right" });
   doc.setFont("helvetica", "normal");
   doc.setFontSize(8);
@@ -142,7 +142,7 @@ export function generateReport(patient, result) {
   );
   NUMERIC_FIELDS.forEach((f) => {
     const v = patient[f.id];
-    rows.push([f.label, Number.isInteger(v) ? String(v) : Number(v).toFixed(1), f.unit]);
+    rows.push([f.label, !Number.isFinite(Number(v)) ? "\u2014" : Number.isInteger(v) ? String(v) : Number(v).toFixed(1), f.unit]);
   });
 
   const colW = contentW / 2;
