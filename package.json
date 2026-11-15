@@ -1,0 +1,20 @@
+{
+  "name": "somnascan",
+  "version": "1.0.0",
+  "private": true,
+  "description": "SomnaScan: in-browser sleep disorder screening dashboard (React) with a small FastAPI server.",
+  "scripts": {
+    "install:all": "npm install && npm --prefix frontend ci && python -m pip install -r backend/requirements.txt",
+    "dev": "concurrently -n api,web -c blue,green \"npm run dev:api\" \"npm run dev:web\"",
+    "dev:api": "python -m uvicorn server:app --app-dir backend --reload --port 8000",
+    "dev:web": "npm --prefix frontend start",
+    "build": "npm --prefix frontend run build",
+    "start": "npm run build && python -m uvicorn server:app --app-dir backend --host 0.0.0.0 --port 8000",
+    "test": "npm run test:web && npm run test:api",
+    "test:web": "npm --prefix frontend run test:ci",
+    "test:api": "python -m pytest -q"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  }
+}
